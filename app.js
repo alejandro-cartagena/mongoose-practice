@@ -12,4 +12,12 @@ const movieSchema = new mongoose.Schema({
 
 const Movie = mongoose.model('Movie', movieSchema)
 
-const amadeus = new Movie({ title: 'Amadeus', year: 1984, score: 9.2, rating: 'R' })
+Movie.insertMany([
+    {title: 'City of God', year: 1996, score: 9.6, rating: 'R'},
+    {title: 'Logan', year: 2017, score: 8.9, rating: 'R'},
+    {title: 'Frozen', year: 2015, score: 9.2, rating: 'PG'},
+    {title: 'Pulp Fiction', year: 1994, score: 9.8, rating: 'R'},
+    {title: 'The Avengers', year: 2012, score: 9.1, rating: 'PG-13'},
+])
+    .then(data => console.log(data))
+    .catch(err => console.log("ERROR", `\n${err}`))
