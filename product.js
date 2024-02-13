@@ -35,18 +35,32 @@ const shopSchema = mongoose.Schema({
 
 })
 
+
+shopSchema.methods.toggleOnSale = function() {
+    this.onSale = !this.onSale
+    return this.save()
+}
+
+shopSchema.methods.addCategory = function(newCat) {
+    this.categories.push(newCat)
+    return this.save()
+}
+
 const Product = mongoose.model('Product', shopSchema)
 
-const bike = new Product({ 
-    name: 'Mountain Bike', 
-    price: 500,
-    categories: ['Cycling'],
-    size: 'M' 
-})
-bike.save()
-    .then(data => console.log(data))
-    .catch(err => console.log("ERROR", `\n${err}`))
+Product.insertMany([
+    {name: "Mountain Bike", price: 500},
+    {name: "Jansport", price: 35}
+])
 
-// Product.findOneAndUpdate({ name: 'Tire Pump' }, { price: -10.99 }, { new: true })
-//     .then(data => console.log(data))
-//     .catch(err => console.log("ERROR", `\n${err}`))
+
+const findProduct = async () => {
+    const foundProduct = await Product.findOne({name: "Mountain Bike"})
+    console.log(foundProduct)
+    await foundProduct.toggleOnSale()
+    console.log(foundProduct)
+    await foundProduct.addCategory('Outdoors')
+    console.log(foundProduct)
+}
+
+findProduct()
