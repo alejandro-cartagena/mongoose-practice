@@ -46,13 +46,16 @@ shopSchema.methods.addCategory = function(newCat) {
     return this.save()
 }
 
+shopSchema.statics.fireSale = function() {
+    return this.updateMany({}, {onSale: true, price: 0})
+}
+
 const Product = mongoose.model('Product', shopSchema)
 
-Product.insertMany([
-    {name: "Mountain Bike", price: 500},
-    {name: "Jansport", price: 35}
-])
-
+// Product.insertMany([
+//     {name: "Mountain Bike", price: 500},
+//     {name: "Jansport", price: 35}
+// ])
 
 const findProduct = async () => {
     const foundProduct = await Product.findOne({name: "Mountain Bike"})
@@ -63,4 +66,8 @@ const findProduct = async () => {
     console.log(foundProduct)
 }
 
-findProduct()
+Product.fireSale()
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+
+// findProduct()
